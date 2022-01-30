@@ -1,3 +1,4 @@
+from mimetypes import init
 import torch
 #from torch_geometric.data import Dataset
 from torch_geometric.data import InMemoryDataset, Data
@@ -6,7 +7,6 @@ import numpy as np
 
 class Dataset(InMemoryDataset):
     def __init__(self, root, dataset, pred_edges=1, transform=None, pre_transform=None):
-
         """
         if pred_edges=0, the dataset is used for SIGN/GNN only,
         we store the graph with edges in the .edge file
@@ -36,7 +36,7 @@ class Dataset(InMemoryDataset):
                     '{}.info'.format(self.dataset)]
 
     def read_data(self):
-        # handle node and class 
+        # handle node and class
         node_list = []
         label = []
         max_node_index = 0
@@ -72,14 +72,15 @@ class Dataset(InMemoryDataset):
                 edge_list.append(edge_l)
                 sr_list.append(sr_l)
 
+        # 将label转换成onehot编码
         label = self.construct_one_hot_label(label)
 
         return node_list, edge_list, label, sr_list, max_node_index + 1, data_num
 
     def construct_full_edge_list(self, nodes):
         num_node = len(nodes)
-        edge_list = [[],[]]         #first for sender, second for receiver
-        sender_receiver_list = []
+        edge_list = [[],[]]                 # [[sender...], [receiver...]]
+        sender_receiver_list = []           # [[s,r],[s,r]...]
         for i in range(num_node):
             for j in range(num_node)[i:]:
                 edge_list[0].append(i)
@@ -87,7 +88,6 @@ class Dataset(InMemoryDataset):
                 sender_receiver_list.append([nodes[i],nodes[j]])
 
         return edge_list, sender_receiver_list
-
 
     def construct_one_hot_label(self, label):
         """Convert an iterable of indices to one-hot encoded labels."""
@@ -102,7 +102,7 @@ class Dataset(InMemoryDataset):
         data_list = []
         sr_data = []
         for i in range(len(self.node)):
-            node_features = torch.LongTensor(self.node[i]).unsqueeze(1)
+            node_features = torch.LongTensor(self.node[i]).unsqueeze(1) # 维度＋1 => 二维
             x = node_features
             edge_index = torch.LongTensor(edge[i])
             y = torch.FloatTensor(label[i])

@@ -1,2 +1,3 @@
-/data/processed
+/data/*
 /code/__pycache__
+/code-paddle/__pycache__

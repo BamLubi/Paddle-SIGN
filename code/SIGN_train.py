@@ -48,6 +48,8 @@ def train(args, data_info, show_loss, data_nums):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            
+            break
 
         cur_loss = loss_all / data_nums[0]
 

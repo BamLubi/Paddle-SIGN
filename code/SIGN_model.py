@@ -41,6 +41,12 @@ class L0_SIGN(nn.Module):
             sr = torch.transpose(sr, 0, 1)    # [2, num_edges]
             s, l0_penaty = self.linkpred(sr, is_training)
             pred_edge_index, pred_edge_weight = self.construct_pred_edge(edge_index, s, self.device) 
+            print("调用sign前","----"*10)
+            print("edge_index", edge_index.shape)
+            print("pred_edge_weight", pred_edge_weight.shape)
+            print("sr", sr.shape)
+            print("x==node_features", x.shape)
+            print("----"*10)
             updated_nodes = self.sign(x, pred_edge_index, edge_weight=pred_edge_weight)
             num_edges = pred_edge_weight.size(0)
         else:
@@ -93,6 +99,12 @@ class SIGN(MessagePassing):
         pairwise_analysis = self.lin1(x_i * x_j)
         pairwise_analysis = self.act(pairwise_analysis)
         pairwise_analysis = self.lin2(pairwise_analysis)
+        
+        print("----"*10)
+        print("src_feat", x_i.shape, x_i)
+        print("pairwise_analysis",pairwise_analysis.shape)
+        print("edge_weight", edge_weight.shape)
+        print("----"*10)
 
         if edge_weight != None:
             interaction_analysis = pairwise_analysis * edge_weight.view(-1,1)
@@ -150,12 +162,4 @@ class LinkPred(nn.Module):
 
         l0_penaty = torch.sigmoid(loc - self.temp * np.log2(-self.inter_min/self.inter_max)).mean()
 
-        return s, l0_penaty 
-
-    def permutate_batch_wise(x, batch):
-        """
-        x: all feature embeddings all batch
-        batch: a list containing feature belongs to which graph
-        """
-        return
-
+        return s, l0_penaty
