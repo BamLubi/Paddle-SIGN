@@ -11,7 +11,7 @@ parser.add_argument('--l0_weight', type=float, default=0.001, help='weight of th
 parser.add_argument('--l2_weight', type=float, default=0.001, help='weight of the l2 regularization term')
 parser.add_argument('--lr', type=float, default=0.05, help='learning rate')
 parser.add_argument('--batch_size', type=int, default=128, help='batch size 1024')
-parser.add_argument('--n_epoch', type=int, default=100, help='the number of epochs 500')
+parser.add_argument('--n_epoch', type=int, default=10, help='the number of epochs 500')
 parser.add_argument('--l0_para', nargs='?', default='[0.66, -0.1, 1.1]',
                         help="l0 parameters, which are beta (temprature), \
                             zeta (interval_min) and gama (interval_max).")
@@ -22,7 +22,7 @@ parser.add_argument('--use_cuda', type=bool, default=True, help='whether to use 
 args = parser.parse_args()
 
 
-dataset = RandomDataset(dataset="../data/ml-tag.data", pred_edges=args.pred_edges)
+dataset = RandomDataset(dataset="../data/"+args.dataset+".data", pred_edges=args.pred_edges)
 num_feature = dataset.node_M() 
 data_num = dataset.data_N()
 num_graphs = dataset.get_num_graph()
@@ -62,14 +62,14 @@ num_graphs = dataset.get_num_graph()
 #     print("label", data['label'])
 #     break
 
-# 划分数据集(0.7,0.15,0.15)
-train_index = int(len(dataset)* 0.7)
-test_index = int(len(dataset) * 0.85) - train_index
+# 划分数据集(0.8,0.1,0.1)
+train_index = int(len(dataset)* 0.8)
+test_index = int(len(dataset) * 0.9) - train_index
 val_index = len(dataset) - train_index - test_index
 dataset = random_split(dataset, [train_index, test_index, val_index])
 train_dataset, test_dataset, val_dataset = dataset[0], dataset[1], dataset[2]
 
-train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, drop_last=True, collate_fn=collate_fn)
+train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False, drop_last=True, collate_fn=collate_fn)
 test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, drop_last=True, collate_fn=collate_fn)
 val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, drop_last=True, collate_fn=collate_fn)
 
@@ -84,5 +84,5 @@ train:test:val: {[train_index,test_index,val_index]}
 """)
 
 # 训练
-datainfo = [train_loader, test_loader, val_loader, num_feature]
+datainfo = [train_loader, test_loader, val_loader, num_feature, num_graphs]
 train(args, datainfo, [len(train_dataset), len(val_dataset), len(test_dataset)])

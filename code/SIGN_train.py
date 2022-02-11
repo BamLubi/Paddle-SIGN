@@ -50,7 +50,7 @@ def train(args, data_info, show_loss, data_nums):
             optimizer.step()
             
             break
-
+        break
         cur_loss = loss_all / data_nums[0]
 
         # evaluation

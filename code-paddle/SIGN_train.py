@@ -4,6 +4,7 @@ from sklearn.metrics import roc_auc_score, accuracy_score
 import time
 import paddle
 import pgl
+import matplotlib.pyplot as plt
 
 
 def train(args, data_info, data_nums):
@@ -11,20 +12,21 @@ def train(args, data_info, data_nums):
     test_loader = data_info[1]
     val_loader = data_info[2]
     num_feature = data_info[3]
+    num_graphs = data_info[4]
     
     model = L0_SIGN(args, num_feature)
     
-    # optimizer = paddle.optimizer.Adagrad(
-    #     parameters=filter(lambda p: p.requires_grad, model.parameters()),
-    #     learning_rate=args.lr,
-    #     epsilon=1e-5,
-    #     # weight_decay=1e-5,
-    # )
-    optimizer = paddle.optimizer.Adagrad(learning_rate=args.lr, parameters=model.parameters())
+    optimizer = paddle.optimizer.Adagrad(learning_rate=args.lr,
+                                         parameters=model.parameters(),
+                                         epsilon=1e-05,
+                                         weight_decay=1e-05)
     
     crit = paddle.nn.MSELoss()
+    
+    loss_list = []
+    ACC_list = []
+    AUC_list = []
 
-    # print([i.size() for i in filter(lambda p: p.requires_grad, model.parameters())])
     print('start training...')
     start_time = time.time()
     for step in range(args.n_epoch):
@@ -42,7 +44,7 @@ def train(args, data_info, data_nums):
             l0_loss = l0_penaty * args.l0_weight 
             l2_loss = l2_penaty * args.l2_weight
             loss = baseloss + l0_loss + l2_loss 
-            loss_all += data_nums[0] * loss.item()
+            loss_all += num_graphs * loss.item()
             
             loss.backward()
             optimizer.step()
@@ -62,6 +64,12 @@ def train(args, data_info, data_nums):
         print('Epoch: {:03d}, Loss: {:.4f}, Train Auc: {:.4f}, Train Acc: {:.4f}, Val Auc: {:.4f}, Acc: {:.4f}, Test Auc: {:.4f}, Acc: {:.4f}, Train edges: {:07d}, Train time: {:.2f}'.
           format(step, cur_loss, train_auc, train_acc, val_auc, val_acc, test_auc, test_acc, test_edges, t))
         start_time = time.time()
+        ## prepare plot data
+        loss_list.append(cur_loss)
+        ACC_list.append(val_acc)
+        AUC_list.append(val_auc)
+    # draw plot
+    draw_plot(loss_list, ACC_list, AUC_list)
 
 def graph2tensor(data, batch_size):
     # data['node_attr'] = data['node_attr'].reshape([batch_size*3,1])
@@ -100,3 +108,29 @@ def evaluate(model, loader, batch_size):
     auc = roc_auc_score(labels, predictions)
     acc = accuracy_score(np.argmax(labels, 1), np.argmax(predictions, 1))
     return auc, acc, edges_all
+
+def draw_plot(loss, ACC, AUC):
+    
+    plt.figure(figsize=(12,6), dpi=80)
+    plt.figure(1)
+    plt.rcParams['font.sans-serif']='SimHei'
+
+    ax1 = plt.subplot(121)
+    plt.plot(range(len(loss)), loss, color='b', label='LOSS')
+    # plt.plot(range(len(loss)), loss, color='b', marker='o', label='LOSS')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title("LOSS")
+    plt.legend(loc='best')
+
+    ax2 = plt.subplot(122)
+    plt.plot(range(len(ACC)), ACC, color='r', label='ACC')
+    plt.plot(range(len(AUC)), AUC, color='g', label='AUC')
+    # plt.plot(range(len(ACC)), ACC, color='r', marker='s', label='ACC')
+    # plt.plot(range(len(AUC)), AUC, color='g', marker='d', label='AUC')
+    plt.xlabel('Epoch')
+    plt.ylabel('ACC | AUC')
+    plt.title("ACC & AUC")
+    plt.legend(loc='best')
+
+    plt.show()

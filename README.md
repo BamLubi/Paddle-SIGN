@@ -28,4 +28,7 @@ $ pip install -r requirements.txt
    ## hidden_layer: 32
    ## lr: 0.05
    ```
- 
+
+[模型分析]:./SIGN算法分析笔记.md
+[论文]:./SIGN.pdf
+

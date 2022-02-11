@@ -17,7 +17,6 @@ class L0_SIGN(paddle.nn.Layer):
 
         if self.pred_edges:
             self.linkpred = LinkPred(self.dim, self.hidden_layer, self.n_feature,  self.l0_para)
-            # self.linkpred = self.linkpred.to(self.device)
 
         self.sign = SIGN(self.dim, self.hidden_layer)
         self.g = paddle.nn.Linear(self.dim, 2) # 2 is the class dimention  
@@ -34,15 +33,16 @@ class L0_SIGN(paddle.nn.Layer):
         # graph.edge_feat['edge_attr']: [bact_size*6, 2]
         # graph.edges: [bact_size*6, 2]
         
-        # x, edge_index, sr = data['x'], data['edge_index'], data['edge_attr']
-        
         x, edge_index, sr = graph.node_feat['node_attr'], graph.edges, graph.edge_feat['edge_attr']
-        # segment_ids = graph.graph_node_id
         segment_ids = [int(i/3) for i in range(self.batch_size * 3)]
         segment_ids = paddle.to_tensor(segment_ids, dtype='int64')
+        
+        
+        # print("x -> sign", x)
+        # print("edge_index -> sign", edge_index)
+        # print("sr -> sign", sr)
 
         x = self.feature_emb(x)
-        # x = paddle.squeeze(x, axis=1)
         x = x.squeeze(1)
 
         if self.pred_edges:
@@ -55,13 +55,37 @@ class L0_SIGN(paddle.nn.Layer):
                 edges=pred_edge_index
             )
             # print("调用sign前","----"*10)
-            # print("edge_index", edge_index.shape)
-            # print("pred_edge_weight", pred_edge_weight.shape)
-            # print("x==node_features", x.shape)
-            # print("sr", sr.shape)
+            # print("sr -> s", sr.shape)
+            # print("s -> pred_edge_index & pred_edge_weight", s)
+            # print("edge_index -> pred_edge_index & pred_edge_weight", edge_index)
+            # print("pred_edge_index", pred_edge_index)
+            # print("pred_edge_weight -> sign", pred_edge_weight)
+            # print("x==node_features -> sign", x)
+            # print(pred_edge_weight)
             # print("----"*10)
+            
+            ## x根据pred_edge_index拓展第一维度
+            x = x[pred_edge_index[1]]
+            
             updated_nodes = self.sign(graph, x, pred_edge_weight)
             num_edges = pred_edge_weight.shape[0]
+            
+            ## 根据pred_edge_index对updated_nodes取mean/add/max
+            ## updated_nodes = [X,8]
+            ## pred_edge_index = [2,Y], 0<=Y<=N
+            ## updated_nodes = [N,8],N为所有节点数=3*batchsize
+            index = pred_edge_index.numpy()[1] ## [1,2,2,3,4]
+            updated_nodes = updated_nodes.numpy()
+            ans = []
+            for i in range(3*self.batch_size):
+                tmp = updated_nodes[index==i]
+                if tmp.shape[0] != 0:
+                    tmp = np.mean(tmp, axis=0)
+                else:
+                    tmp = np.zeros(self.dim)
+                ans.append(tmp)
+            updated_nodes = paddle.to_tensor(ans)
+                
         else:
             updated_nodes = self.sign(graph, x, sr)
             l0_penaty = 0
@@ -70,14 +94,17 @@ class L0_SIGN(paddle.nn.Layer):
         l2_penaty = paddle.multiply(updated_nodes, updated_nodes).sum()
         
         
+        # print("segment_mean","----"*10)
+        # print("updated_nodes", updated_nodes)
+        # print("segment_ids", segment_ids)
+        # print("----"*10)
+        # updated_nodes = paddle.incubate.segment_mean(updated_nodes, segment_ids) ## paddle2.2
         updated_nodes = pgl.math.segment_mean(updated_nodes, segment_ids)
         out = self.g(updated_nodes)
         # out = out.reshape([self.batch_size*2, 1])
         # out = out.squeeze(1)
         
-        # print("pgl.math.segment_mean","----"*10)
-        # print("updated_nodes", updated_nodes.shape)
-        # print("segment_ids", segment_ids.shape)
+        # print("out","----"*10)
         # print("out", out.shape)
         # print("----"*10)
         
@@ -90,29 +117,29 @@ class L0_SIGN(paddle.nn.Layer):
 
         construct the predicted edge set and corresponding edge weights
         """
+        
+        
+        # print("construct_pred_edge","----"*10)
+        # print("fe_index", fe_index.shape)
+        # print("s", s.shape)
+        # print(s)
+        # print("----"*10)
+        
         s = paddle.squeeze(s)
         fe_index = paddle.transpose(fe_index, perm=[1, 0])
 
-        # s = s.numpy()
-        # fe_index_np = fe_index.numpy()
+        s = s.numpy()
+        fe_index_np = fe_index.numpy()
         
-        # sender = paddle.to_tensor(fe_index_np[0][s>0])
-        # receiver = paddle.to_tensor(fe_index_np[1][s>0])
-        # pred_weight = paddle.to_tensor(s[s>0])
+        sender = paddle.to_tensor(fe_index_np[0][s>0])
+        receiver = paddle.to_tensor(fe_index_np[1][s>0])
+        pred_weight = paddle.to_tensor(s[s>0])
         
-        # sender = paddle.unsqueeze(sender, 0)
-        # receiver = paddle.unsqueeze(receiver, 0)
-        # pred_index = paddle.concat([sender, receiver], 0)
-        
-        # fe_index = paddle.to_tensor(fe_index)
-        # fe_index = paddle.transpose(fe_index, perm=[1, 0])
-        
-        
-        sender = paddle.unsqueeze(fe_index[0], 0)
-        receiver = paddle.unsqueeze(fe_index[1], 0)
+        sender = paddle.unsqueeze(sender, 0)
+        receiver = paddle.unsqueeze(receiver, 0)
         pred_index = paddle.concat([sender, receiver], 0)
-        pred_weight = s
         
+        fe_index = paddle.to_tensor(fe_index)
         fe_index = paddle.transpose(fe_index, perm=[1, 0])
 
         return pred_index, pred_weight 
@@ -139,15 +166,17 @@ class SIGN(paddle.nn.Layer):
 
         if edge_feat != None:
             edge_feat_ = paddle.reshape(edge_feat["e_attr"],[-1,1])
-            # interaction_analysis = pairwise_analysis * edge_feat
             interaction_analysis = paddle.multiply(pairwise_analysis, edge_feat_)
         else:
             interaction_analysis = pairwise_analysis
+            
         # print("----"*10)
         # print("src_feat['src']", src_feat["src"].shape)
+        # print("edge_feat['e_attr']",edge_feat["e_attr"].shape)
         # print("pairwise_analysis",pairwise_analysis.shape)
-        # print("interaction_analysis", interaction_analysis.shape)
+        # print("interaction_analysis", interaction_analysis)
         # print("----"*10)
+        
         return {'msg':interaction_analysis}
 
     def _recv_func(self, msg):
@@ -163,29 +192,33 @@ class SIGN(paddle.nn.Layer):
             If `concat=True` then return a tensor with shape (num_nodes, hidden_size),
             else return a tensor with shape (num_nodes, hidden_size * num_heads) 
         """
+        
         # print("补充前","----"*10)
-        # print("node_feature", node_feature.shape, node_feature[:4, :])
-        # print("edge_attr", edge_attr.shape)
-        # print("----"*10)
-        mis = edge_attr.shape[0] - node_feature.shape[0]
-        if mis > 0:
-            edge_attr = edge_attr[:node_feature.shape[0]]
-            # for i in range(mis):
-            #     node_feature = paddle.concat([node_feature, paddle.unsqueeze(node_feature[0],0)], 0)
-        elif mis < 0:
-            for i in range(-mis):
-                edge_attr = paddle.concat([edge_attr, edge_attr[0]], 0)
-            
-        # print("----"*10)
         # print("node_feature", node_feature.shape)
         # print("edge_attr", edge_attr.shape)
         # print("----"*10)
+        # mis = edge_attr.shape[0] - node_feature.shape[0]
+        # if mis > 0:
+        #     edge_attr = edge_attr[:node_feature.shape[0]]
+        #     # for i in range(mis):
+        #     #     node_feature = paddle.concat([node_feature, paddle.unsqueeze(node_feature[0],0)], 0)
+        # elif mis < 0:
+        #     for i in range(-mis):
+        #         edge_attr = paddle.concat([edge_attr, edge_attr[0]], 0)
+        # print("补充后","----"*10)
+        # print("node_feature", node_feature.shape)
+        # print("edge_attr", edge_attr.shape)
+        # print("----"*10)
+        
+        
         msg = self._send_func(src_feat={"src": node_feature.clone()},
-            dst_feat={"dst": node_feature.clone()},
-            edge_feat={"e_attr": edge_attr}
+                              dst_feat={"dst": node_feature.clone()},
+                              edge_feat={"e_attr": edge_attr}
         )
         output = self._recv_func(msg)
+        # print("求平均前output", output)
         # output = graph.recv(reduce_func=self._recv_func, msg=msg)
+        # print("求平均后output", output)
         
         # msg = graph.send(
         #     self._send_func,
@@ -225,16 +258,13 @@ class LinkPred(paddle.nn.Layer):
         
         self.feature_emb_edge = paddle.nn.Embedding(n_feature, D_in,
                                                     weight_attr=paddle.ParamAttr(name='emb_weight',
-                                                                                 initializer=paddle.nn.initializer.Normal(mean=0.2, std=0.01)))    #D_in is the dimension size
-        # 权重初始化
-        # self.linear2.weight.set_value(paddle.normal(shape=self.feature_emb_edge.shape(), mean=0.2, std=0.01))
-        # self.feature_emb_edge.weight.data.normal_(0.2,0.01)
+                                                                                 initializer=paddle.nn.initializer.Normal(mean=0.2, std=0.01)))
 
     def forward(self, sender_receiver, is_training):
         #construct permutation input
         sender_emb = self.feature_emb_edge(sender_receiver[0,:])
         receiver_emb = self.feature_emb_edge(sender_receiver[1,:])
-        # _input =sender_emb * receiver_emb # element wise product sender and receiver embeddings
+        
         _input = paddle.multiply(sender_emb, receiver_emb)
         #loc = _input.sum(1)
         h_relu = self.dropout(self.relu(self.linear1(_input)))

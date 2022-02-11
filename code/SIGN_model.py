@@ -34,6 +34,10 @@ class L0_SIGN(nn.Module):
 
         x, edge_index, sr, batch = data.x, data.edge_index, data.edge_attr, data.batch
 
+        print("x -> sign", x)
+        print("edge_index -> sign", edge_index)
+        print("sr -> sign", sr)
+
         x = self.feature_emb(x)
         x = x.squeeze(1)
 
@@ -42,10 +46,13 @@ class L0_SIGN(nn.Module):
             s, l0_penaty = self.linkpred(sr, is_training)
             pred_edge_index, pred_edge_weight = self.construct_pred_edge(edge_index, s, self.device) 
             print("调用sign前","----"*10)
-            print("edge_index", edge_index.shape)
-            print("pred_edge_weight", pred_edge_weight.shape)
-            print("sr", sr.shape)
-            print("x==node_features", x.shape)
+            print("sr -> s", sr.shape)
+            print("s -> pred_edge_index & pred_edge_weight", s)
+            print("edge_index -> pred_edge_index & pred_edge_weight", edge_index)
+            print("pred_edge_index", pred_edge_index)
+            print("pred_edge_weight -> sign", pred_edge_weight)
+            print("x==node_features -> sign", x)
+            # print(pred_edge_weight)
             print("----"*10)
             updated_nodes = self.sign(x, pred_edge_index, edge_weight=pred_edge_weight)
             num_edges = pred_edge_weight.size(0)
@@ -54,8 +61,22 @@ class L0_SIGN(nn.Module):
             l0_penaty = 0
             num_edges = edge_index.size(1)
         l2_penaty = (updated_nodes * updated_nodes).sum()
+        
+        
+        print("global_mean_pool","----"*10)
+        print("updated_nodes", updated_nodes)
+        print("batch", batch)
+        print("----"*10)
+        
+        
         graph_embedding = global_mean_pool(updated_nodes, batch)
         out = self.g(graph_embedding)
+        
+        print("out","----"*10)
+        print("out", out.shape)
+        print("----"*10)
+        
+        
         return out, l0_penaty, l2_penaty, num_edges 
 
     def construct_pred_edge(self, fe_index, s, device):
@@ -65,6 +86,14 @@ class L0_SIGN(nn.Module):
 
         construct the predicted edge set and corresponding edge weights
         """
+        
+        
+        print("construct_pred_edge","----"*10)
+        print("fe_index", fe_index.shape)
+        print("s", s.shape)
+        print(s)
+        print("----"*10)
+        
         new_edge_index = [[],[]]
         edge_weight = []
         s = torch.squeeze(s)
@@ -89,7 +118,9 @@ class SIGN(MessagePassing):
     def forward(self, x, edge_index, edge_weight=None):
         # x has shape [N, dim]
         # edge_index has shape [2, E]
-        return self.propagate(edge_index, x=x, edge_weight=edge_weight)
+        ans = self.propagate(edge_index, x=x, edge_weight=edge_weight)
+        print("ans",ans)
+        return ans
 
     def message(self, x_i, x_j, edge_weight):
         # x_i has shape [E, dim]
@@ -99,17 +130,18 @@ class SIGN(MessagePassing):
         pairwise_analysis = self.lin1(x_i * x_j)
         pairwise_analysis = self.act(pairwise_analysis)
         pairwise_analysis = self.lin2(pairwise_analysis)
-        
-        print("----"*10)
-        print("src_feat", x_i.shape, x_i)
-        print("pairwise_analysis",pairwise_analysis.shape)
-        print("edge_weight", edge_weight.shape)
-        print("----"*10)
 
         if edge_weight != None:
             interaction_analysis = pairwise_analysis * edge_weight.view(-1,1)
         else:
             interaction_analysis = pairwise_analysis
+        
+        print("----"*10)
+        print("src_feat", x_i)
+        print("edge_weight", edge_weight)
+        print("pairwise_analysis",pairwise_analysis.shape)
+        print("interaction_analysis", interaction_analysis)
+        print("----"*10)
 
         return interaction_analysis
 
@@ -117,6 +149,16 @@ class SIGN(MessagePassing):
         # aggr_out has shape [N, dim]
 
         return aggr_out
+
+    def aggregate(self, inputs, index, ptr, dim_size):
+        print("aggregate","----"*10)
+        print('self.aggr:', self.aggr)
+        print("inputs", inputs)
+        print("index", index)
+        print("ptr", ptr)
+        print("dim_size", dim_size)
+        print("----"*10)
+        return super().aggregate(inputs, index, ptr=ptr, dim_size=dim_size)
 
 
 class LinkPred(nn.Module):

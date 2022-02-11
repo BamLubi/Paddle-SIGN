@@ -1,7 +1,7 @@
-from operator import imod
 import numpy as np
 import paddle
 from paddle.io import Dataset
+from tqdm import tqdm
 
 class RandomDataset(Dataset):
     def __init__(self, dataset="../data/ml-tag.data", pred_edges=1):
@@ -29,7 +29,7 @@ class RandomDataset(Dataset):
         node, edge, label, sr_list, self.node_num, self.data_num = self.read_data()
         self.num_graph = len(node)
         
-        for i in range(len(node)):
+        for i in tqdm(range(len(node))):
             num_nodes = len(node[i])
             num_nodes = paddle.to_tensor(num_nodes, dtype='int64')
             node_features = paddle.to_tensor(node[i], dtype='int64')
@@ -104,7 +104,8 @@ class RandomDataset(Dataset):
         else:
             edge_list = []
             sr_list = []    #sender_receiver_list, containing node index
-            for nodes in node_list:
+            for index, nodes in enumerate(node_list):
+            # for nodes in node_list:
                 edge_l, sr_l = self.construct_full_edge_list(nodes)
                 edge_list.append(edge_l)
                 sr_list.append(sr_l)
@@ -123,6 +124,7 @@ class RandomDataset(Dataset):
                 edge_list[0].append(i)
                 edge_list[1].append(j)
                 sender_receiver_list.append([nodes[i],nodes[j]])
+        
 
         return edge_list, sender_receiver_list
     
@@ -156,7 +158,10 @@ def collate_fn(batch_data):
     edge_attr = None
     label = None
 
+    base_add = 0
     for i,data in enumerate(batch_data):
+        data['edges'] = data['edges'] + base_add
+        base_add += 3
         edges = paddle.concat([edges, data['edges']]) if isinstance(edges, paddle.Tensor) else data['edges'].clone()
         num_nodes = num_nodes + data['num_nodes'] if isinstance(num_nodes, paddle.Tensor) else data['num_nodes'].clone()
         num_edges = num_edges + data['num_edges'] if isinstance(num_edges, paddle.Tensor) else data['num_edges'].clone()
