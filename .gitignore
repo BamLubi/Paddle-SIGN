@@ -1,3 +1,2 @@
 /data/*
-/code/__pycache__
-/code-paddle/__pycache__
+__pycache__

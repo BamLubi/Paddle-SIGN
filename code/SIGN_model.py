@@ -46,13 +46,12 @@ class L0_SIGN(nn.Module):
             s, l0_penaty = self.linkpred(sr, is_training)
             pred_edge_index, pred_edge_weight = self.construct_pred_edge(edge_index, s, self.device) 
             print("调用sign前","----"*10)
-            print("sr -> s", sr.shape)
-            print("s -> pred_edge_index & pred_edge_weight", s)
-            print("edge_index -> pred_edge_index & pred_edge_weight", edge_index)
-            print("pred_edge_index", pred_edge_index)
-            print("pred_edge_weight -> sign", pred_edge_weight)
-            print("x==node_features -> sign", x)
-            # print(pred_edge_weight)
+            # print("sr -> s", sr.shape)
+            # print("s -> pred_edge_index & pred_edge_weight", s)
+            # print("edge_index -> pred_edge_index & pred_edge_weight", edge_index)
+            print("x==node_features -> sign", x.shape, x)
+            print("pred_edge_index", pred_edge_index.shape, pred_edge_index)
+            print("pred_edge_weight -> sign", pred_edge_weight.shape, pred_edge_weight)
             print("----"*10)
             updated_nodes = self.sign(x, pred_edge_index, edge_weight=pred_edge_weight)
             num_edges = pred_edge_weight.size(0)
@@ -73,7 +72,7 @@ class L0_SIGN(nn.Module):
         out = self.g(graph_embedding)
         
         print("out","----"*10)
-        print("out", out.shape)
+        print("graph_embedding", graph_embedding)
         print("----"*10)
         
         
@@ -88,11 +87,11 @@ class L0_SIGN(nn.Module):
         """
         
         
-        print("construct_pred_edge","----"*10)
-        print("fe_index", fe_index.shape)
-        print("s", s.shape)
-        print(s)
-        print("----"*10)
+        # print("construct_pred_edge","----"*10)
+        # print("fe_index", fe_index.shape)
+        # print("s", s.shape)
+        # print(s)
+        # print("----"*10)
         
         new_edge_index = [[],[]]
         edge_weight = []
@@ -125,6 +124,12 @@ class SIGN(MessagePassing):
     def message(self, x_i, x_j, edge_weight):
         # x_i has shape [E, dim]
         # x_j has shape [E, dim]
+        
+        print("sign中","----"*10)
+        print("x_i", x_i.shape, x_i)
+        print("x_j", x_j.shape, x_j)
+        print("edge_weight", edge_weight.shape, edge_weight)
+        print("----"*10)
 
         # pairwise analysis
         pairwise_analysis = self.lin1(x_i * x_j)
@@ -136,12 +141,12 @@ class SIGN(MessagePassing):
         else:
             interaction_analysis = pairwise_analysis
         
-        print("----"*10)
-        print("src_feat", x_i)
-        print("edge_weight", edge_weight)
-        print("pairwise_analysis",pairwise_analysis.shape)
-        print("interaction_analysis", interaction_analysis)
-        print("----"*10)
+        # print("----"*10)
+        # print("src_feat", x_i)
+        # print("edge_weight", edge_weight)
+        # print("pairwise_analysis",pairwise_analysis.shape)
+        # print("interaction_analysis", interaction_analysis)
+        # print("----"*10)
 
         return interaction_analysis
 
@@ -151,13 +156,13 @@ class SIGN(MessagePassing):
         return aggr_out
 
     def aggregate(self, inputs, index, ptr, dim_size):
-        print("aggregate","----"*10)
-        print('self.aggr:', self.aggr)
-        print("inputs", inputs)
-        print("index", index)
-        print("ptr", ptr)
-        print("dim_size", dim_size)
-        print("----"*10)
+        # print("aggregate","----"*10)
+        # print('self.aggr:', self.aggr)
+        # print("inputs", inputs)
+        # print("index", index)
+        # print("ptr", ptr)
+        # print("dim_size", dim_size)
+        # print("----"*10)
         return super().aggregate(inputs, index, ptr=ptr, dim_size=dim_size)
 
 

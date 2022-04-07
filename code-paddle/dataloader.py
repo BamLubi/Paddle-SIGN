@@ -2,8 +2,11 @@ import numpy as np
 import paddle
 from paddle.io import Dataset
 from tqdm import tqdm
+import pgl
+import logging
+import os
 
-class RandomDataset(Dataset):
+class SIGNDataset(Dataset):
     def __init__(self, dataset="../data/ml-tag.data", pred_edges=1):
         self.dataset = dataset
         self.pred_edges = pred_edges
@@ -11,64 +14,53 @@ class RandomDataset(Dataset):
         self.data_list = []
         
         self.node_num = 0
-        self.data_num = 0
-        self.num_graphs = 0
+        self.edge_num = 0
+        self.graph_num = 0
+        self.feature_num = 0
+        
+        self.graph_list = []
+        self.label_list = []
         
         self.process()
     
     def __getitem__(self, index):
-        return self.data_list[index]
+        return self.graph_list[index], self.label_list[index]
     
     def __len__(self):
-        return len(self.data_list)
-
-    def shuffle(self):
-        np.random.shuffle(self.data_list)
+        return len(self.graph_list)
 
     def process(self):
-        node, edge, label, sr_list, self.node_num, self.data_num = self.read_data()
-        self.num_graph = len(node)
+        node, edge, label, sr_list, self.feature_num, self.data_num = self.read_data()
+        self.graph_num = len(node)
         
+        logging.info("Processing data...")
         for i in tqdm(range(len(node))):
             num_nodes = len(node[i])
-            num_nodes = paddle.to_tensor(num_nodes, dtype='int64')
-            node_features = paddle.to_tensor(node[i], dtype='int64')
-            node_features = paddle.unsqueeze(node_features, axis=1) # 维度＋1 => 二维
+
+            node_features = np.array(node[i],dtype='int32').reshape(len(node[i]), 1)
             
             edges = []
-            for u,v in zip(edge[i][0],edge[i][1]):
+            for u,v in zip(edge[i][0], edge[i][1]):
                 u_v = (u,v)
                 edges.append(u_v)
-            edges = paddle.to_tensor(edges, dtype='int64')
+            
             num_edges = len(edges)
-            num_edges = paddle.to_tensor(num_edges, dtype='int64')
-            # edge_index = paddle.to_tensor(edge[i], dtype='int64')
             
-            y = paddle.to_tensor(label[i], dtype='float32')
+            self.label_list.append(label[i])
             
-            if self.pred_edges:
-                sr = paddle.to_tensor(sr_list[i], dtype='int64')
-            else:
-                sr = []
+            sr = sr_list[i] if self.pred_edges else []
+
+            g = pgl.Graph(
+                num_nodes=num_nodes,
+                edges=edges,
+                node_feat={"node_attr": node_features},
+                edge_feat={"edge_attr": sr}
+            )
             
-            tmp = {
-                "edges": edges,
-                "num_nodes": num_nodes,
-                "num_edges": num_edges,
-                "node_attr": node_features,
-                "edge_attr": sr,
-                "label": y
-            }
-            # g = pgl.Graph(
-            #     edges=edges,
-            #     num_nodes=num_nodes,
-            #     num_edges=num_edges,
-            #     node_feat={'node_attr': node_features},
-            #     edge_feat={'edge_attr': sr}
-            # )
-            self.data_list.append(tmp)
-        # 后续可以加上tensor的保存
-        # torch.save((data, slices), self.processed_paths[0])
+            self.graph_list.append(g)
+            
+            self.node_num += num_nodes
+            self.edge_num += num_edges
    
     def read_data(self):
         """读取数据集
@@ -90,7 +82,6 @@ class RandomDataset(Dataset):
                 if max_node_index < max(int_list):
                     max_node_index = max(int_list)
 
-
         if not self.pred_edges:
             edge_list = [[[],[]] for _ in range(data_num)]
             sr_list = []
@@ -103,29 +94,25 @@ class RandomDataset(Dataset):
                     edge_list[node_index][1].append(int(edge_info[2]))
         else:
             edge_list = []
-            sr_list = []    #sender_receiver_list, containing node index
+            sr_list = []
             for index, nodes in enumerate(node_list):
             # for nodes in node_list:
                 edge_l, sr_l = self.construct_full_edge_list(nodes)
                 edge_list.append(edge_l)
                 sr_list.append(sr_l)
-
         # 将label转换成onehot编码
         label = self.construct_one_hot_label(label)
-
         return node_list, edge_list, label, sr_list, max_node_index + 1, data_num
     
     def construct_full_edge_list(self, nodes):
         num_node = len(nodes)
-        edge_list = [[],[]]                 # [[sender...], [receiver...]]
-        sender_receiver_list = []           # [[s,r],[s,r]...]
+        edge_list = [[],[]] # [[sender...], [receiver...]]
+        sender_receiver_list = []  # [[s,r],[s,r]...]
         for i in range(num_node):
             for j in range(num_node)[i:]:
                 edge_list[0].append(i)
                 edge_list[1].append(j)
                 sender_receiver_list.append([nodes[i],nodes[j]])
-        
-
         return edge_list, sender_receiver_list
     
     def construct_one_hot_label(self, label):
@@ -138,45 +125,13 @@ class RandomDataset(Dataset):
         targets = np.array(label, dtype=np.int32).reshape(-1)
         return np.eye(nb_classes)[targets]
     
-    def node_M(self):
-        """获取最大的节点id"""
-        return self.node_num
-    
-    def data_N(self):
-        """获取数据数量"""
-        return self.data_num
-    
-    def get_num_graph(self):
-        """获取数据数量"""
-        return self.num_graph
-    
 def collate_fn(batch_data):
-    edges = None
-    num_nodes = None
-    num_edges = None
-    node_attr = None
-    edge_attr = None
-    label = None
+    graphs = []
+    labels = []
+    for g, l in batch_data:
+        graphs.append(g)
+        labels.append(l)
 
-    base_add = 0
-    for i,data in enumerate(batch_data):
-        data['edges'] = data['edges'] + base_add
-        base_add += 3
-        edges = paddle.concat([edges, data['edges']]) if isinstance(edges, paddle.Tensor) else data['edges'].clone()
-        num_nodes = num_nodes + data['num_nodes'] if isinstance(num_nodes, paddle.Tensor) else data['num_nodes'].clone()
-        num_edges = num_edges + data['num_edges'] if isinstance(num_edges, paddle.Tensor) else data['num_edges'].clone()
-        node_attr = paddle.concat([node_attr, data['node_attr']]) if isinstance(node_attr, paddle.Tensor) else data['node_attr'].clone()
-        edge_attr = paddle.concat([edge_attr, data['edge_attr']]) if isinstance(edge_attr, paddle.Tensor) else data['edge_attr'].clone()
-        if data['label'].shape != [1,2]:
-            data['label'] = data['label'].unsqueeze(0)
-        label = paddle.concat([label, data['label']]) if isinstance(label, paddle.Tensor) else data['label'].clone()
+    labels = np.array(labels, dtype="float32")
 
-    batch_data = {
-        "edges": edges,
-        "num_nodes": num_nodes,
-        "num_edges": num_edges,
-        "node_attr": node_attr,
-        "edge_attr": edge_attr,
-        "label": label
-    }
-    return batch_data
+    return graphs, labels

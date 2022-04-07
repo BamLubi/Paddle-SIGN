@@ -14,7 +14,7 @@ parser.add_argument('--dim', type=int, default=8, help='dimension of entity and 
 parser.add_argument('--l0_weight', type=float, default=0.001, help='weight of the l2 regularization term')
 parser.add_argument('--l2_weight', type=float, default=0.001, help='weight of the l2 regularization term')
 parser.add_argument('--lr', type=float, default=0.05, help='learning rate')
-parser.add_argument('--batch_size', type=int, default=4, help='batch size 1024')
+parser.add_argument('--batch_size', type=int, default=1, help='batch size 1024')
 parser.add_argument('--n_epoch', type=int, default=1, help='the number of epochs 500')
 parser.add_argument('--l0_para', nargs='?', default='[0.66, -0.1, 1.1]',
                         help="l0 parameters, which are beta (temprature), \
