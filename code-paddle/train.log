@@ -1,7 +1,7 @@
-2022-04-07 21:26:57,345 - INFO - dataloader.py:36 - Processing data...
-2022-04-07 21:27:35,216 - INFO - SIGN_main.py:62 - 
+2022-04-08 14:01:05,558 - INFO - dataloader.py:36 - Processing data...
+2022-04-08 14:02:07,933 - INFO - SIGN_main.py:62 - 
 datast: ml-tag
-vector dim: 8
+vector dim: 16
 batch_size: 1024
 lr: 0.05
 feature: 90445,
@@ -10,15 +10,9 @@ nodes: 6020577,
 edge: 12041154,
 train:val:test: [1605487, 200686, 200686]
 
-2022-04-07 21:27:35,223 - INFO - SIGN_train.py:32 - Start training...
-2022-04-07 21:30:18,574 - INFO - SIGN_train.py:63 - Epoch: 000, Loss: 0.150, Train Auc: 0.922, Acc: 0.892; Val Auc: 0.915, Acc: 0.890; Test Auc: 0.915, Acc: 0.890; Train time: 163.35
-2022-04-07 21:33:03,845 - INFO - SIGN_train.py:63 - Epoch: 001, Loss: 0.108, Train Auc: 0.939, Acc: 0.900; Val Auc: 0.928, Acc: 0.896; Test Auc: 0.928, Acc: 0.895; Train time: 165.27
-2022-04-07 21:35:46,559 - INFO - SIGN_train.py:63 - Epoch: 002, Loss: 0.097, Train Auc: 0.950, Acc: 0.908; Val Auc: 0.935, Acc: 0.901; Test Auc: 0.934, Acc: 0.900; Train time: 162.71
-2022-04-07 21:38:28,030 - INFO - SIGN_train.py:63 - Epoch: 003, Loss: 0.089, Train Auc: 0.957, Acc: 0.914; Val Auc: 0.938, Acc: 0.903; Test Auc: 0.937, Acc: 0.903; Train time: 161.47
-2022-04-07 21:41:09,990 - INFO - SIGN_train.py:63 - Epoch: 004, Loss: 0.084, Train Auc: 0.963, Acc: 0.919; Val Auc: 0.940, Acc: 0.905; Test Auc: 0.939, Acc: 0.905; Train time: 161.96
-2022-04-07 21:43:51,542 - INFO - SIGN_train.py:63 - Epoch: 005, Loss: 0.079, Train Auc: 0.967, Acc: 0.924; Val Auc: 0.940, Acc: 0.907; Test Auc: 0.940, Acc: 0.906; Train time: 161.55
-2022-04-07 21:46:33,232 - INFO - SIGN_train.py:63 - Epoch: 006, Loss: 0.075, Train Auc: 0.971, Acc: 0.928; Val Auc: 0.941, Acc: 0.908; Test Auc: 0.940, Acc: 0.907; Train time: 161.69
-2022-04-07 21:49:16,921 - INFO - SIGN_train.py:63 - Epoch: 007, Loss: 0.072, Train Auc: 0.973, Acc: 0.932; Val Auc: 0.941, Acc: 0.909; Test Auc: 0.940, Acc: 0.908; Train time: 163.69
-2022-04-07 21:52:04,480 - INFO - SIGN_train.py:63 - Epoch: 008, Loss: 0.068, Train Auc: 0.976, Acc: 0.935; Val Auc: 0.941, Acc: 0.910; Test Auc: 0.939, Acc: 0.909; Train time: 167.56
-2022-04-07 21:54:50,043 - INFO - SIGN_train.py:63 - Epoch: 009, Loss: 0.066, Train Auc: 0.978, Acc: 0.938; Val Auc: 0.940, Acc: 0.911; Test Auc: 0.939, Acc: 0.909; Train time: 165.56
-2022-04-07 21:54:50,258 - INFO - SIGN_train.py:131 - Save plot to :epoch_10_acc_0.911.jpg
+2022-04-08 14:02:07,939 - INFO - SIGN_train.py:32 - Start training...
+2022-04-08 14:04:41,598 - INFO - SIGN_train.py:63 - Epoch: 0000, Loss: 0.1417, Train Auc: 0.8930, Acc: 0.8838; Val Auc: 0.8893, Acc: 0.8820; Test Auc: 0.8887, Acc: 0.8822; Train time: 153.66
+2022-04-08 14:07:17,303 - INFO - SIGN_train.py:63 - Epoch: 0001, Loss: 0.1056, Train Auc: 0.9349, Acc: 0.9024; Val Auc: 0.9250, Acc: 0.8970; Test Auc: 0.9251, Acc: 0.8981; Train time: 155.70
+2022-04-08 14:09:51,224 - INFO - SIGN_train.py:63 - Epoch: 0002, Loss: 0.0903, Train Auc: 0.9520, Acc: 0.9167; Val Auc: 0.9383, Acc: 0.9059; Test Auc: 0.9377, Acc: 0.9070; Train time: 153.92
+2022-04-08 14:12:26,068 - INFO - SIGN_train.py:63 - Epoch: 0003, Loss: 0.0794, Train Auc: 0.9620, Acc: 0.9293; Val Auc: 0.9442, Acc: 0.9131; Test Auc: 0.9437, Acc: 0.9128; Train time: 154.84
+2022-04-08 14:15:05,061 - INFO - SIGN_train.py:63 - Epoch: 0004, Loss: 0.0713, Train Auc: 0.9689, Acc: 0.9378; Val Auc: 0.9460, Acc: 0.9165; Test Auc: 0.9457, Acc: 0.9161; Train time: 158.99

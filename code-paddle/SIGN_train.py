@@ -59,7 +59,7 @@ def train(args, data_info, data_nums):
         # 打印信息
         end_time = time.time()
         t = end_time - start_time
-        logging.info('Epoch: {:03d}, Loss: {:.3f}, Train Auc: {:.3f}, Acc: {:.3f}; Val Auc: {:.3f}, Acc: {:.3f}; Test Auc: {:.3f}, Acc: {:.3f}; Train time: {:.2f}'.
+        logging.info('Epoch: {:04d}, Loss: {:.4f}, Train Auc: {:.4f}, Acc: {:.4f}; Val Auc: {:.4f}, Acc: {:.4f}; Test Auc: {:.4f}, Acc: {:.4f}; Train time: {:.1f}s'.
             format(step, cur_loss.item(), train_auc, train_acc, val_auc, val_acc, test_auc, test_acc, t))
         start_time = time.time()
         # 记录数据

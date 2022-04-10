@@ -58,8 +58,8 @@ class L0_SIGN(paddle.nn.Layer):
         
         ## BUG: 不知道为什么会突然出现updated_nodes.shape=[3071,8], segment_ids.shape=[3072]
         ## BUG: dtye='float32'不能识别
-        # if updated_nodes.shape[0] < segment_ids.shape[0]:
-        #     updated_nodes = paddle.concat([updated_nodes, paddle.to_tensor(np.zeros((1,self.dim)))], 0)
+        if updated_nodes.shape[0] < segment_ids.shape[0]:
+            updated_nodes = paddle.concat([updated_nodes, paddle.to_tensor(np.zeros((1,self.dim)), dtype='float32')], 0)
         
         # 添加图平均池化，并最后裁剪
         graph_embedding = pgl.math.segment_mean(updated_nodes, segment_ids)
