@@ -14,7 +14,7 @@
 
 runner:
   train_data_dir: "./datasets/sign/train"
-  train_reader_path: "census_reader" # importlib format
+  train_reader_path: "sign_reader" # importlib format
   use_gpu: False
   use_auc: True
   is_train: True # 是否训练
@@ -25,7 +25,7 @@ runner:
   model_save_path: "output_model_sign_all"
   test_data_dir: "./datasets/sign/test"
   infer_batch_size: 1024
-  infer_reader_path: "census_reader" # importlib format
+  infer_reader_path: "sign_reader" # importlib format
   infer_load_path: "output_model_sign_all"
   infer_start_epoch: 0
   infer_end_epoch: 5
