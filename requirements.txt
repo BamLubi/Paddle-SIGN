@@ -1,3 +1,2 @@
-pgl
-matplotlib
-tqdm
+paddlepaddle == 2.2.2
+pgl == 2.2.0
