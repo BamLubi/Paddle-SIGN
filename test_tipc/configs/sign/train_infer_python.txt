@@ -9,8 +9,8 @@ runner.model_save_path:
 runner.train_batch_size:lite_train_lite_infer=128|whole_train_whole_infer=1024|whole_infer=1024|lite_train_whole_infer=128
 runner.infer_load_path:
 train_model_name:lite_train_lite_infer=2|whole_train_whole_infer=99|whole_infer=0|lite_train_whole_infer=2
-runner.test_data_dir:../data
-runner.train_data_dir:../data
+runner.test_data_dir:./data
+runner.train_data_dir:./data
 ##
 trainer:norm_train
 norm_train:-u tools/trainer.py -m ./models/sign/config_bigdata.yaml -o runner.print_interval=2

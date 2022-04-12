@@ -29,6 +29,7 @@ test_tipc/
 使用本工具，可以测试不同功能的支持情况，以及预测结果是否对齐，测试流程概括如下：
 
 
+1. 将 test_tipc 目录移动至 PaddleRec 目录
 1. 运行测试脚本`test_train_inference_python.sh`，产出log，由log可以看到不同配置是否运行成功；
 
 测试单项功能仅需两行命令，**如需测试不同模型/功能，替换配置文件即可**，命令格式如下：
@@ -40,6 +41,9 @@ bash test_tipc/test_train_inference_python.sh configs/[model_name]/[params_file_
 
 例如，测试基本训练预测功能的`lite_train_lite_infer`模式，运行：
 ```shell
+# 迁移test_tipc
+rm -rf PaddleRec/test_tipc
+mv PaddleRec/models/sign/test_tipc PaddleRec
 # 运行测试
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/sign/train_infer_python.txt 'lite_train_lite_infer'
 ```
