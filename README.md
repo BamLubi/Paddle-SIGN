@@ -7,6 +7,7 @@
     ├── ml-tag-128k.data
 ├── datasets # 全量数据
     ├── ml-tag.data
+├── test_tipc # TIPC
 ├── __init__.py 
 ├── README.md # 文档
 ├── config.yaml # sample数据配置
@@ -86,7 +87,7 @@ L0-SIGN模型有两个模块，一个是L0边预估模块，通过矩阵分解�
 
 | 模型 | auc   | acc   | batch_size | epoch_num | Time of each epoch |
 | :------| :------ | :------ | :------| :------ | :------ |
-| SIGN | 0.940 | 0.893 | 1024 | 20 | 约18分钟 |
+| SIGN | 0.9418 | 0.8927 | 1024 | 20 | 约18分钟 |
 
 1. 确认您当前所在目录为PaddleRec/models/sign
 2. 进入PaddleRec/sign/datasets目录下，执行该脚本，会从国内源的服务器上下载sign全量数据集，并解压到指定文件夹。
