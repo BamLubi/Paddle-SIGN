@@ -1,0 +1,157 @@
+aistudio@jupyter-52221-3795303:~/work/models/sign$ python -u ../../tools/trainer.py -m config.yaml
+2022-04-12 17:05:16,552 - INFO - **************common.configs**********
+2022-04-12 17:05:16,552 - INFO - use_gpu: True, use_xpu: False, use_npu: False, use_visual: False, train_batch_size: 1024, train_data_dir: data, epochs: 20, print_interval: 500, model_save_path: output_model_sign
+2022-04-12 17:05:16,552 - INFO - **************common.configs**********
+W0412 17:05:20.129599   247 device_context.cc:447] Please NOTE: device: 0, GPU Compute Capability: 7.0, Driver API Version: 10.1, Runtime API Version: 10.1
+W0412 17:05:20.134594   247 device_context.cc:465] device: 0, cuDNN Version: 7.6.
+2022-04-12 17:05:24,962 - INFO - read data
+2022-04-12 17:05:24,963 - INFO - reader path:sign_reader
+/opt/conda/envs/python35-paddle120-env/lib/python3.7/site-packages/paddle/fluid/dygraph/math_op_patch.py:253: UserWarning: The dtype of left and right variables are not the same, left dtype is paddle.int64, but right dtype is paddle.float32, the right dtype will convert to paddle.int64
+  format(lhs_dtype, rhs_dtype, lhs_dtype))
+2022-04-12 17:06:10,849 - INFO - epoch: 0, batch_id: 0, AUC:0.500000, ACC:0.649414, loss:0.5009312, avg_reader_cost: 0.00058 sec, avg_batch_cost: 0.00205 sec, avg_samples: 2.04800, ips: 1000.71910 ins/s
+2022-04-12 17:10:51,909 - INFO - epoch: 0, batch_id: 500, AUC:0.788134, ACC:0.688159, loss:0.18541333, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56199 sec, avg_samples: 1024.00000, ips: 1822.08655 ins/s
+2022-04-12 17:15:26,908 - INFO - epoch: 0, batch_id: 1000, AUC:0.841936, ACC:0.768826, loss:0.16569619, avg_reader_cost: 0.00016 sec, avg_batch_cost: 0.54988 sec, avg_samples: 1024.00000, ips: 1862.23229 ins/s
+2022-04-12 17:20:18,636 - INFO - epoch: 0, batch_id: 1500, AUC:0.863775, ACC:0.804477, loss:0.15770243, avg_reader_cost: 0.00014 sec, avg_batch_cost: 0.58333 sec, avg_samples: 1024.00000, ips: 1755.42645 ins/s
+2022-04-12 17:24:35,400 - INFO - epoch: 0 done, AUC: 0.874769,ACC: 0.822143,loss:0.14919266, epoch time: 1105.58 s
+2022-04-12 17:24:35,404 - INFO - Already save model in output_model_sign/0
+2022-04-12 17:24:36,273 - INFO - epoch: 1, batch_id: 0, AUC:0.905023, ACC:0.890625, loss:0.13951969, avg_reader_cost: 0.00025 sec, avg_batch_cost: 0.00173 sec, avg_samples: 2.04800, ips: 1186.63338 ins/s
+2022-04-12 17:29:16,416 - INFO - epoch: 1, batch_id: 500, AUC:0.910986, ACC:0.883834, loss:0.127161, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56016 sec, avg_samples: 1024.00000, ips: 1828.03888 ins/s
+2022-04-12 17:33:57,542 - INFO - epoch: 1, batch_id: 1000, AUC:0.913552, ACC:0.884155, loss:0.13304195, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56213 sec, avg_samples: 1024.00000, ips: 1821.64935 ins/s
+2022-04-12 17:38:36,780 - INFO - epoch: 1, batch_id: 1500, AUC:0.915663, ACC:0.884725, loss:0.13503087, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55836 sec, avg_samples: 1024.00000, ips: 1833.95472 ins/s
+2022-04-12 17:42:59,469 - INFO - epoch: 1 done, AUC: 0.916897,ACC: 0.885012,loss:0.13309471, epoch time: 1104.06 s
+2022-04-12 17:42:59,474 - INFO - Already save model in output_model_sign/1
+2022-04-12 17:43:00,457 - INFO - epoch: 2, batch_id: 0, AUC:0.913759, ACC:0.896484, loss:0.12261184, avg_reader_cost: 0.00031 sec, avg_batch_cost: 0.00195 sec, avg_samples: 2.04800, ips: 1051.89218 ins/s
+2022-04-12 17:47:38,444 - INFO - epoch: 2, batch_id: 500, AUC:0.922935, ACC:0.888072, loss:0.11225045, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55585 sec, avg_samples: 1024.00000, ips: 1842.21901 ins/s
+2022-04-12 17:52:16,605 - INFO - epoch: 2, batch_id: 1000, AUC:0.924005, ACC:0.887658, loss:0.12184613, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55620 sec, avg_samples: 1024.00000, ips: 1841.05766 ins/s
+2022-04-12 17:56:57,455 - INFO - epoch: 2, batch_id: 1500, AUC:0.924927, ACC:0.887743, loss:0.12542869, avg_reader_cost: 0.00017 sec, avg_batch_cost: 0.56158 sec, avg_samples: 1024.00000, ips: 1823.43046 ins/s
+2022-04-12 18:01:17,519 - INFO - epoch: 2 done, AUC: 0.925404,ACC: 0.887739,loss:0.125134, epoch time: 1098.04 s
+2022-04-12 18:01:17,524 - INFO - Already save model in output_model_sign/2
+2022-04-12 18:01:18,453 - INFO - epoch: 3, batch_id: 0, AUC:0.917156, ACC:0.896484, loss:0.11510505, avg_reader_cost: 0.00028 sec, avg_batch_cost: 0.00185 sec, avg_samples: 2.04800, ips: 1109.39099 ins/s
+2022-04-12 18:05:57,646 - INFO - epoch: 3, batch_id: 500, AUC:0.928327, ACC:0.889557, loss:0.1046318, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55827 sec, avg_samples: 1024.00000, ips: 1834.25012 ins/s
+2022-04-12 18:10:26,558 - INFO - epoch: 3, batch_id: 1000, AUC:0.928925, ACC:0.889065, loss:0.11548132, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53770 sec, avg_samples: 1024.00000, ips: 1904.39209 ins/s
+2022-04-12 18:14:55,461 - INFO - epoch: 3, batch_id: 1500, AUC:0.929455, ACC:0.889069, loss:0.12005579, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53768 sec, avg_samples: 1024.00000, ips: 1904.48728 ins/s
+2022-04-12 18:19:07,587 - INFO - epoch: 3 done, AUC: 0.929679,ACC: 0.889003,loss:0.12054618, epoch time: 1070.06 s
+2022-04-12 18:19:07,591 - INFO - Already save model in output_model_sign/3
+2022-04-12 18:19:08,476 - INFO - epoch: 4, batch_id: 0, AUC:0.918530, ACC:0.896484, loss:0.11074785, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00176 sec, avg_samples: 2.04800, ips: 1165.15619 ins/s
+2022-04-12 18:23:36,308 - INFO - epoch: 4, batch_id: 500, AUC:0.931498, ACC:0.890529, loss:0.10000981, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53555 sec, avg_samples: 1024.00000, ips: 1912.06203 ins/s
+2022-04-12 18:28:04,745 - INFO - epoch: 4, batch_id: 1000, AUC:0.931916, ACC:0.889923, loss:0.11132559, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53676 sec, avg_samples: 1024.00000, ips: 1907.75872 ins/s
+2022-04-12 18:32:33,502 - INFO - epoch: 4, batch_id: 1500, AUC:0.932259, ACC:0.889900, loss:0.11615647, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53740 sec, avg_samples: 1024.00000, ips: 1905.48287 ins/s
+2022-04-12 18:36:40,103 - INFO - epoch: 4 done, AUC: 0.932357,ACC: 0.889815,loss:0.11701025, epoch time: 1052.51 s
+2022-04-12 18:36:40,107 - INFO - Already save model in output_model_sign/4
+2022-04-12 18:36:40,975 - INFO - epoch: 5, batch_id: 0, AUC:0.921197, ACC:0.897461, loss:0.10765816, avg_reader_cost: 0.00031 sec, avg_batch_cost: 0.00172 sec, avg_samples: 2.04800, ips: 1188.61360 ins/s
+2022-04-12 18:41:16,652 - INFO - epoch: 5, batch_id: 500, AUC:0.933654, ACC:0.891208, loss:0.09742339, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55122 sec, avg_samples: 1024.00000, ips: 1857.68250 ins/s
+2022-04-12 18:45:44,365 - INFO - epoch: 5, batch_id: 1000, AUC:0.933938, ACC:0.890571, loss:0.10835807, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53531 sec, avg_samples: 1024.00000, ips: 1912.92526 ins/s
+2022-04-12 18:50:14,366 - INFO - epoch: 5, batch_id: 1500, AUC:0.934184, ACC:0.890472, loss:0.11336757, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53988 sec, avg_samples: 1024.00000, ips: 1896.70114 ins/s
+2022-04-12 18:54:20,809 - INFO - epoch: 5 done, AUC: 0.934211,ACC: 0.890355,loss:0.1144561, epoch time: 1060.70 s
+2022-04-12 18:54:20,813 - INFO - Already save model in output_model_sign/5
+2022-04-12 18:54:21,720 - INFO - epoch: 6, batch_id: 0, AUC:0.921968, ACC:0.897461, loss:0.10536612, avg_reader_cost: 0.00031 sec, avg_batch_cost: 0.00180 sec, avg_samples: 2.04800, ips: 1138.27429 ins/s
+2022-04-12 18:58:56,295 - INFO - epoch: 6, batch_id: 500, AUC:0.935217, ACC:0.891615, loss:0.09437536, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.54903 sec, avg_samples: 1024.00000, ips: 1865.10102 ins/s
+2022-04-12 19:03:24,087 - INFO - epoch: 6, batch_id: 1000, AUC:0.935427, ACC:0.890972, loss:0.10624225, avg_reader_cost: 0.00016 sec, avg_batch_cost: 0.53546 sec, avg_samples: 1024.00000, ips: 1912.36166 ins/s
+2022-04-12 19:07:57,287 - INFO - epoch: 6, batch_id: 1500, AUC:0.935611, ACC:0.890860, loss:0.11113001, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.54628 sec, avg_samples: 1024.00000, ips: 1874.48990 ins/s
+2022-04-12 19:12:21,189 - INFO - epoch: 6 done, AUC: 0.935583,ACC: 0.890729,loss:0.11256582, epoch time: 1080.38 s
+2022-04-12 19:12:21,194 - INFO - Already save model in output_model_sign/6
+2022-04-12 19:12:22,176 - INFO - epoch: 7, batch_id: 0, AUC:0.923027, ACC:0.897461, loss:0.10350096, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00195 sec, avg_samples: 2.04800, ips: 1050.86039 ins/s
+2022-04-12 19:17:45,352 - INFO - epoch: 7, batch_id: 500, AUC:0.936401, ACC:0.891956, loss:0.09245309, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.64623 sec, avg_samples: 1024.00000, ips: 1584.58099 ins/s
+2022-04-12 19:22:34,195 - INFO - epoch: 7, batch_id: 1000, AUC:0.936564, ACC:0.891274, loss:0.10420784, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57756 sec, avg_samples: 1024.00000, ips: 1772.96608 ins/s
+2022-04-12 19:27:11,336 - INFO - epoch: 7, batch_id: 1500, AUC:0.936711, ACC:0.891168, loss:0.10927285, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55416 sec, avg_samples: 1024.00000, ips: 1847.83916 ins/s
+2022-04-12 19:31:31,714 - INFO - epoch: 7 done, AUC: 0.936654,ACC: 0.891035,loss:0.11113558, epoch time: 1150.52 s
+2022-04-12 19:31:31,718 - INFO - Already save model in output_model_sign/7
+2022-04-12 19:31:32,627 - INFO - epoch: 8, batch_id: 0, AUC:0.923843, ACC:0.898438, loss:0.10220094, avg_reader_cost: 0.00027 sec, avg_batch_cost: 0.00181 sec, avg_samples: 2.04800, ips: 1134.36813 ins/s
+2022-04-12 19:36:09,623 - INFO - epoch: 8, batch_id: 500, AUC:0.937342, ACC:0.892200, loss:0.09088823, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55387 sec, avg_samples: 1024.00000, ips: 1848.80980 ins/s
+2022-04-12 19:40:55,939 - INFO - epoch: 8, batch_id: 1000, AUC:0.937468, ACC:0.891520, loss:0.10299953, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57251 sec, avg_samples: 1024.00000, ips: 1788.61155 ins/s
+2022-04-12 19:45:35,634 - INFO - epoch: 8, batch_id: 1500, AUC:0.937587, ACC:0.891383, loss:0.10794501, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55927 sec, avg_samples: 1024.00000, ips: 1830.96450 ins/s
+2022-04-12 19:49:51,526 - INFO - epoch: 8 done, AUC: 0.937502,ACC: 0.891256,loss:0.10990213, epoch time: 1099.81 s
+2022-04-12 19:49:51,530 - INFO - Already save model in output_model_sign/8
+2022-04-12 19:49:52,437 - INFO - epoch: 9, batch_id: 0, AUC:0.925027, ACC:0.899414, loss:0.10068363, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00180 sec, avg_samples: 2.04800, ips: 1136.11151 ins/s
+2022-04-12 19:54:26,850 - INFO - epoch: 9, batch_id: 500, AUC:0.938088, ACC:0.892434, loss:0.08956654, avg_reader_cost: 0.00020 sec, avg_batch_cost: 0.54870 sec, avg_samples: 1024.00000, ips: 1866.21574 ins/s
+2022-04-12 19:59:10,545 - INFO - epoch: 9, batch_id: 1000, AUC:0.938191, ACC:0.891766, loss:0.10150252, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.56727 sec, avg_samples: 1024.00000, ips: 1805.13039 ins/s
+2022-04-12 20:03:41,656 - INFO - epoch: 9, batch_id: 1500, AUC:0.938297, ACC:0.891648, loss:0.1069458, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.54210 sec, avg_samples: 1024.00000, ips: 1888.93766 ins/s
+2022-04-12 20:07:55,486 - INFO - epoch: 9 done, AUC: 0.938201,ACC: 0.891497,loss:0.10887968, epoch time: 1083.96 s
+2022-04-12 20:07:55,491 - INFO - Already save model in output_model_sign/9
+2022-04-12 20:07:56,407 - INFO - epoch: 10, batch_id: 0, AUC:0.926114, ACC:0.899414, loss:0.09955292, avg_reader_cost: 0.00035 sec, avg_batch_cost: 0.00182 sec, avg_samples: 2.04800, ips: 1126.45809 ins/s
+2022-04-12 20:12:31,924 - INFO - epoch: 10, batch_id: 500, AUC:0.938728, ACC:0.892627, loss:0.08850022, avg_reader_cost: 0.00017 sec, avg_batch_cost: 0.55091 sec, avg_samples: 1024.00000, ips: 1858.74850 ins/s
+2022-04-12 20:17:12,700 - INFO - epoch: 10, batch_id: 1000, AUC:0.938808, ACC:0.891931, loss:0.10046558, avg_reader_cost: 0.00017 sec, avg_batch_cost: 0.56143 sec, avg_samples: 1024.00000, ips: 1823.91825 ins/s
+2022-04-12 20:21:52,982 - INFO - epoch: 10, batch_id: 1500, AUC:0.938906, ACC:0.891821, loss:0.10579672, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56044 sec, avg_samples: 1024.00000, ips: 1827.13207 ins/s
+2022-04-12 20:26:04,187 - INFO - epoch: 10 done, AUC: 0.938795,ACC: 0.891678,loss:0.10805283, epoch time: 1088.70 s
+2022-04-12 20:26:04,191 - INFO - Already save model in output_model_sign/10
+2022-04-12 20:26:05,084 - INFO - epoch: 11, batch_id: 0, AUC:0.926788, ACC:0.898438, loss:0.09857125, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00177 sec, avg_samples: 2.04800, ips: 1154.55862 ins/s
+2022-04-12 20:30:45,686 - INFO - epoch: 11, batch_id: 500, AUC:0.939253, ACC:0.892871, loss:0.0875496, avg_reader_cost: 0.00017 sec, avg_batch_cost: 0.56108 sec, avg_samples: 1024.00000, ips: 1825.04659 ins/s
+2022-04-12 20:35:34,140 - INFO - epoch: 11, batch_id: 1000, AUC:0.939317, ACC:0.892129, loss:0.09955949, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57679 sec, avg_samples: 1024.00000, ips: 1775.34232 ins/s
+2022-04-12 20:40:10,430 - INFO - epoch: 11, batch_id: 1500, AUC:0.939414, ACC:0.892044, loss:0.10472424, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55245 sec, avg_samples: 1024.00000, ips: 1853.56104 ins/s
+2022-04-12 20:44:17,361 - INFO - epoch: 11 done, AUC: 0.939297,ACC: 0.891884,loss:0.10737321, epoch time: 1093.17 s
+2022-04-12 20:44:17,365 - INFO - Already save model in output_model_sign/11
+2022-04-12 20:44:18,258 - INFO - epoch: 12, batch_id: 0, AUC:0.927516, ACC:0.897461, loss:0.0978827, avg_reader_cost: 0.00030 sec, avg_batch_cost: 0.00177 sec, avg_samples: 2.04800, ips: 1155.59959 ins/s
+2022-04-12 20:48:56,559 - INFO - epoch: 12, batch_id: 500, AUC:0.939732, ACC:0.892995, loss:0.08671241, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55648 sec, avg_samples: 1024.00000, ips: 1840.13764 ins/s
+2022-04-12 20:53:36,452 - INFO - epoch: 12, batch_id: 1000, AUC:0.939781, ACC:0.892288, loss:0.09867163, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55966 sec, avg_samples: 1024.00000, ips: 1829.66791 ins/s
+2022-04-12 20:58:19,814 - INFO - epoch: 12, batch_id: 1500, AUC:0.939872, ACC:0.892185, loss:0.10410008, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.56660 sec, avg_samples: 1024.00000, ips: 1807.26069 ins/s
+2022-04-12 21:02:28,997 - INFO - epoch: 12 done, AUC: 0.939749,ACC: 0.892027,loss:0.1066234, epoch time: 1091.63 s
+2022-04-12 21:02:29,001 - INFO - Already save model in output_model_sign/12
+2022-04-12 21:02:29,887 - INFO - epoch: 13, batch_id: 0, AUC:0.928413, ACC:0.897461, loss:0.0970807, avg_reader_cost: 0.00020 sec, avg_batch_cost: 0.00176 sec, avg_samples: 2.04800, ips: 1165.08792 ins/s
+2022-04-12 21:07:09,966 - INFO - epoch: 13, batch_id: 500, AUC:0.940146, ACC:0.893132, loss:0.08600061, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56004 sec, avg_samples: 1024.00000, ips: 1828.45515 ins/s
+2022-04-12 21:11:39,329 - INFO - epoch: 13, batch_id: 1000, AUC:0.940191, ACC:0.892393, loss:0.09797615, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53861 sec, avg_samples: 1024.00000, ips: 1901.20637 ins/s
+2022-04-12 21:16:15,597 - INFO - epoch: 13, batch_id: 1500, AUC:0.940277, ACC:0.892300, loss:0.1033963, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55242 sec, avg_samples: 1024.00000, ips: 1853.67042 ins/s
+2022-04-12 21:20:21,507 - INFO - epoch: 13 done, AUC: 0.940151,ACC: 0.892149,loss:0.1059684, epoch time: 1072.51 s
+2022-04-12 21:20:21,511 - INFO - Already save model in output_model_sign/13
+2022-04-12 21:20:22,456 - INFO - epoch: 14, batch_id: 0, AUC:0.928933, ACC:0.898438, loss:0.09642857, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00188 sec, avg_samples: 2.04800, ips: 1090.69449 ins/s
+2022-04-12 21:24:49,753 - INFO - epoch: 14, batch_id: 500, AUC:0.940516, ACC:0.893231, loss:0.08547053, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.53448 sec, avg_samples: 1024.00000, ips: 1915.89313 ins/s
+2022-04-12 21:29:20,757 - INFO - epoch: 14, batch_id: 1000, AUC:0.940547, ACC:0.892507, loss:0.09730624, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.54189 sec, avg_samples: 1024.00000, ips: 1889.69334 ins/s
+2022-04-12 21:34:04,431 - INFO - epoch: 14, batch_id: 1500, AUC:0.940634, ACC:0.892417, loss:0.10280769, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56722 sec, avg_samples: 1024.00000, ips: 1805.28843 ins/s
+2022-04-12 21:38:17,267 - INFO - epoch: 14 done, AUC: 0.940499,ACC: 0.892262,loss:0.10554287, epoch time: 1075.76 s
+2022-04-12 21:38:17,271 - INFO - Already save model in output_model_sign/14
+2022-04-12 21:38:18,177 - INFO - epoch: 15, batch_id: 0, AUC:0.929667, ACC:0.898438, loss:0.09586828, avg_reader_cost: 0.00026 sec, avg_batch_cost: 0.00180 sec, avg_samples: 2.04800, ips: 1138.76321 ins/s
+2022-04-12 21:42:53,034 - INFO - epoch: 15, batch_id: 500, AUC:0.940860, ACC:0.893301, loss:0.08474753, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.54959 sec, avg_samples: 1024.00000, ips: 1863.19190 ins/s
+2022-04-12 21:47:33,239 - INFO - epoch: 15, batch_id: 1000, AUC:0.940878, ACC:0.892568, loss:0.09677611, avg_reader_cost: 0.00018 sec, avg_batch_cost: 0.56029 sec, avg_samples: 1024.00000, ips: 1827.63343 ins/s
+2022-04-12 21:52:09,314 - INFO - epoch: 15, batch_id: 1500, AUC:0.940958, ACC:0.892500, loss:0.10231666, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55203 sec, avg_samples: 1024.00000, ips: 1854.97587 ins/s
+2022-04-12 21:56:34,644 - INFO - epoch: 15 done, AUC: 0.940821,ACC: 0.892356,loss:0.10504704, epoch time: 1097.37 s
+2022-04-12 21:56:34,648 - INFO - Already save model in output_model_sign/15
+2022-04-12 21:56:35,643 - INFO - epoch: 16, batch_id: 0, AUC:0.930429, ACC:0.900391, loss:0.09476454, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00198 sec, avg_samples: 2.04800, ips: 1036.44009 ins/s
+2022-04-12 22:01:14,667 - INFO - epoch: 16, batch_id: 500, AUC:0.941155, ACC:0.893479, loss:0.08421127, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55793 sec, avg_samples: 1024.00000, ips: 1835.35707 ins/s
+2022-04-12 22:06:03,115 - INFO - epoch: 16, batch_id: 1000, AUC:0.941160, ACC:0.892689, loss:0.09619497, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57677 sec, avg_samples: 1024.00000, ips: 1775.38977 ins/s
+2022-04-12 22:10:40,617 - INFO - epoch: 16, batch_id: 1500, AUC:0.941242, ACC:0.892613, loss:0.10184918, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.55487 sec, avg_samples: 1024.00000, ips: 1845.47399 ins/s
+2022-04-12 22:14:59,537 - INFO - epoch: 16 done, AUC: 0.941105,ACC: 0.892470,loss:0.10451773, epoch time: 1104.89 s
+2022-04-12 22:14:59,541 - INFO - Already save model in output_model_sign/16
+2022-04-12 22:15:00,528 - INFO - epoch: 17, batch_id: 0, AUC:0.930425, ACC:0.899414, loss:0.09479728, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00196 sec, avg_samples: 2.04800, ips: 1045.31450 ins/s
+2022-04-12 22:19:47,042 - INFO - epoch: 17, batch_id: 500, AUC:0.941433, ACC:0.893582, loss:0.08376663, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57289 sec, avg_samples: 1024.00000, ips: 1787.42152 ins/s
+2022-04-12 22:24:24,236 - INFO - epoch: 17, batch_id: 1000, AUC:0.941421, ACC:0.892773, loss:0.09579867, avg_reader_cost: 0.00011 sec, avg_batch_cost: 0.55427 sec, avg_samples: 1024.00000, ips: 1847.48246 ins/s
+2022-04-12 22:29:06,083 - INFO - epoch: 17, batch_id: 1500, AUC:0.941494, ACC:0.892712, loss:0.10133658, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.56357 sec, avg_samples: 1024.00000, ips: 1816.97472 ins/s
+2022-04-12 22:33:39,640 - INFO - epoch: 17 done, AUC: 0.941352,ACC: 0.892567,loss:0.10412707, epoch time: 1120.10 s
+2022-04-12 22:33:39,645 - INFO - Already save model in output_model_sign/17
+2022-04-12 22:33:40,525 - INFO - epoch: 18, batch_id: 0, AUC:0.930847, ACC:0.899414, loss:0.09439114, avg_reader_cost: 0.00031 sec, avg_batch_cost: 0.00175 sec, avg_samples: 2.04800, ips: 1171.34407 ins/s
+2022-04-12 22:38:16,154 - INFO - epoch: 18, batch_id: 500, AUC:0.941675, ACC:0.893648, loss:0.0833208, avg_reader_cost: 0.00014 sec, avg_batch_cost: 0.55114 sec, avg_samples: 1024.00000, ips: 1857.96774 ins/s
+2022-04-12 22:43:20,748 - INFO - epoch: 18, batch_id: 1000, AUC:0.941662, ACC:0.892845, loss:0.09533781, avg_reader_cost: 0.00013 sec, avg_batch_cost: 0.60906 sec, avg_samples: 1024.00000, ips: 1681.27892 ins/s
+2022-04-12 22:48:05,451 - INFO - epoch: 18, batch_id: 1500, AUC:0.941735, ACC:0.892769, loss:0.10092247, avg_reader_cost: 0.00018 sec, avg_batch_cost: 0.56928 sec, avg_samples: 1024.00000, ips: 1798.75765 ins/s
+2022-04-12 22:52:34,150 - INFO - epoch: 18 done, AUC: 0.941591,ACC: 0.892635,loss:0.10379852, epoch time: 1134.50 s
+2022-04-12 22:52:34,154 - INFO - Already save model in output_model_sign/18
+2022-04-12 22:52:35,074 - INFO - epoch: 19, batch_id: 0, AUC:0.931617, ACC:0.899414, loss:0.0938392, avg_reader_cost: 0.00023 sec, avg_batch_cost: 0.00183 sec, avg_samples: 2.04800, ips: 1120.46376 ins/s
+2022-04-12 22:57:47,290 - INFO - epoch: 19, batch_id: 500, AUC:0.941906, ACC:0.893707, loss:0.08290093, avg_reader_cost: 0.00015 sec, avg_batch_cost: 0.62429 sec, avg_samples: 1024.00000, ips: 1640.25491 ins/s
+2022-04-12 23:03:25,262 - INFO - epoch: 19, batch_id: 1000, AUC:0.941891, ACC:0.892921, loss:0.09489951, avg_reader_cost: 0.00015 sec, avg_batch_cost: 0.67580 sec, avg_samples: 1024.00000, ips: 1515.23887 ins/s
+2022-04-12 23:08:14,169 - INFO - epoch: 19, batch_id: 1500, AUC:0.941957, ACC:0.892838, loss:0.10073752, avg_reader_cost: 0.00012 sec, avg_batch_cost: 0.57769 sec, avg_samples: 1024.00000, ips: 1772.58097 ins/s
+2022-04-12 23:12:32,331 - INFO - epoch: 19 done, AUC: 0.941808,ACC: 0.892709,loss:0.10351086, epoch time: 1198.18 s
+2022-04-12 23:12:32,336 - INFO - Already save model in output_model_sign/19
+
+aistudio@jupyter-52221-3795303:~/work/models/sign$ python -u ../../tools/infer.py -m config.yaml
+2022-04-12 23:18:56,421 - INFO - **************common.configs**********
+2022-04-12 23:18:56,421 - INFO - use_gpu: True, use_xpu: False, use_npu: False, use_visual: False, infer_batch_size: 1024, test_data_dir: test, start_epoch: 15, end_epoch: 19, print_interval: 500, model_load_path: output_model_sign
+2022-04-12 23:18:56,421 - INFO - **************common.configs**********
+W0412 23:18:59.965147 16880 device_context.cc:447] Please NOTE: device: 0, GPU Compute Capability: 7.0, Driver API Version: 10.1, Runtime API Version: 10.1
+W0412 23:18:59.970274 16880 device_context.cc:465] device: 0, cuDNN Version: 7.6.
+2022-04-12 23:19:04,478 - INFO - read data
+2022-04-12 23:19:04,478 - INFO - reader path:sign_reader
+2022-04-12 23:19:07,577 - INFO - load model epoch 15
+2022-04-12 23:19:07,577 - INFO - start load model from output_model_sign/15
+/opt/conda/envs/python35-paddle120-env/lib/python3.7/site-packages/paddle/fluid/dygraph/math_op_patch.py:253: UserWarning: The dtype of left and right variables are not the same, left dtype is paddle.int64, but right dtype is paddle.float32, the right dtype will convert to paddle.int64
+  format(lhs_dtype, rhs_dtype, lhs_dtype))
+2022-04-12 23:19:08,543 - INFO - epoch: 15, batch_id: 0, AUC: 0.930040,ACC: 0.899414, avg_reader_cost: 0.00050 sec, avg_batch_cost: 0.00191 sec, avg_samples: 1024.00000, ips: 529850.00 ins/s
+2022-04-12 23:20:18,932 - INFO - epoch: 15 done, AUC: 0.942075,ACC: 0.893734, epoch time: 71.35 s
+2022-04-12 23:20:18,932 - INFO - load model epoch 16
+2022-04-12 23:20:18,932 - INFO - start load model from output_model_sign/16
+2022-04-12 23:20:19,808 - INFO - epoch: 16, batch_id: 0, AUC: 0.941981,ACC: 0.893779, avg_reader_cost: 0.00031 sec, avg_batch_cost: 0.00173 sec, avg_samples: 1024.00000, ips: 7184.45 ins/s
+2022-04-12 23:21:27,019 - INFO - epoch: 16 done, AUC: 0.942212,ACC: 0.893770, epoch time: 68.09 s
+2022-04-12 23:21:27,020 - INFO - load model epoch 17
+2022-04-12 23:21:27,020 - INFO - start load model from output_model_sign/17
+2022-04-12 23:21:27,869 - INFO - epoch: 17, batch_id: 0, AUC: 0.942166,ACC: 0.893792, avg_reader_cost: 0.00019 sec, avg_batch_cost: 0.00168 sec, avg_samples: 1024.00000, ips: 7522.69 ins/s
+2022-04-12 23:22:35,002 - INFO - epoch: 17 done, AUC: 0.942342,ACC: 0.893779, epoch time: 67.98 s
+2022-04-12 23:22:35,002 - INFO - load model epoch 18
+2022-04-12 23:22:35,002 - INFO - start load model from output_model_sign/18
+2022-04-12 23:22:35,878 - INFO - epoch: 18, batch_id: 0, AUC: 0.942312,ACC: 0.893794, avg_reader_cost: 0.00026 sec, avg_batch_cost: 0.00173 sec, avg_samples: 1024.00000, ips: 7528.48 ins/s
+2022-04-12 23:23:44,559 - INFO - epoch: 18 done, AUC: 0.942462,ACC: 0.893797, epoch time: 69.56 s
