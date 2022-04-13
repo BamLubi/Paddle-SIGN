@@ -13,7 +13,7 @@
 # limitations under the License.
 
 runner:
-  train_data_dir: "./datasets/sign/train"
+  train_data_dir: "datasets/sign/train"
   train_reader_path: "sign_reader" # importlib format
   use_gpu: False
   use_auc: True
@@ -23,7 +23,7 @@ runner:
   print_interval: 500
   #model_init_path: "output_model_sign/0" # init model
   model_save_path: "output_model_sign_all"
-  test_data_dir: "./datasets/sign/test"
+  test_data_dir: "datasets/sign/test"
   infer_batch_size: 1024
   infer_reader_path: "sign_reader" # importlib format
   infer_load_path: "output_model_sign_all"
