@@ -21,9 +21,8 @@ from net import L0_SIGN
 
 def get_n_feature(config):
     data_dir = config.get("runner.train_data_dir", "data")
-    data_dir = os.path.split(data_dir)[-1]
     if os.path.split(os.getcwd())[-1] != 'sign':
-        data_dir = os.path.join(os.getcwd(), "models/sign/" + data_dir)
+        data_dir = os.path.join(os.getcwd(), "models/sign", data_dir)
     file_list = [os.path.join(data_dir, x) for x in os.listdir(data_dir)]
     max_node_index = 0
     for file in file_list:
