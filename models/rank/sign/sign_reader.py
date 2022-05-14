@@ -20,61 +20,62 @@ from paddle.io import IterableDataset
 class RecDataset(IterableDataset):
     def __init__(self, file_list, config):
         super(RecDataset, self).__init__()
-        # 是否训练
+        # is train
         self.pred_edges = config.get("hyper_parameters.pred_edges", 1)
         self.batch_size = config.get("runner.train_batch_size", 1024)
         self.file_list = file_list
         self.config = config
-        
+
         self.num_nodes_list = []
         self.edges_list = []
         self.node_features_list = []
         self.sr_list = []
         self.label_list = []
-        
-        # 处理文件
+
+        # Process file
         self.process()
-    
+
     def process(self):
-        """数据预处理"""
+        """process file"""
         node, edge, label, sr_list = self.read_data()
-        
+
         for i in range(len(node)):
             num_nodes = len(node[i])
 
-            node_features = np.array(node[i],dtype='int32').reshape(len(node[i]), 1)
-            
+            node_features = np.array(
+                node[i], dtype='int32').reshape(len(node[i]), 1)
+
             edges = []
-            for u,v in zip(edge[i][0], edge[i][1]):
-                u_v = (u,v)
+            for u, v in zip(edge[i][0], edge[i][1]):
+                u_v = (u, v)
                 edges.append(u_v)
-            
+
             sr = sr_list[i] if self.pred_edges else []
-            
+
             self.num_nodes_list.append(num_nodes)
             self.edges_list.append(edges)
             self.node_features_list.append(node_features)
             self.sr_list.append(sr)
             self.label_list.append(label[i])
-    
+
     def read_data(self):
-        """读取数据集"""
+        """read data"""
         node_list = []
         label = []
-        data_num = 0 # 数据集个数
+        data_num = 0  # number of datasets
         for file in self.file_list:
             with open(file, 'r') as f:
                 for line in f:
                     data_num += 1
                     data = line.split()
-                    # 第一个元素是label
+                    # the first number is label
                     label.append(float(data[0]))
-                    # 其余元素是节点
+                    # the others is nodes
                     int_list = [int(data[i]) for i in range(len(data))[1:]]
                     node_list.append(int_list)
 
         if not self.pred_edges:
-            edge_list = [[[],[]] for _ in range(data_num)]
+            edge_list = [[[], []] for _ in range(data_num)]
             sr_list = []
             # handle edges
             with open(self.edgefile, 'r') as f:
@@ -87,30 +88,30 @@ class RecDataset(IterableDataset):
             edge_list = []
             sr_list = []
             for index, nodes in enumerate(node_list):
-            # for nodes in node_list:
+                # for nodes in node_list:
                 edge_l, sr_l = self.construct_full_edge_list(nodes)
                 edge_list.append(edge_l)
                 sr_list.append(sr_l)
-        # 将label转换成onehot编码
+        # Convert label to onehot encoding
         label = self.construct_one_hot_label(label)
         return node_list, edge_list, label, sr_list
-    
+
     def construct_full_edge_list(self, nodes):
         num_node = len(nodes)
-        edge_list = [[],[]] # [[sender...], [receiver...]]
+        edge_list = [[], []]  # [[sender...], [receiver...]]
         sender_receiver_list = []  # [[s,r],[s,r]...]
         for i in range(num_node):
             for j in range(num_node)[i:]:
                 edge_list[0].append(i)
                 edge_list[1].append(j)
-                sender_receiver_list.append([nodes[i],nodes[j]])
+                sender_receiver_list.append([nodes[i], nodes[j]])
         return edge_list, sender_receiver_list
-    
+
     def construct_one_hot_label(self, label):
         """
-        将label值转换成one-hot编码,label的取值属于{0,1}
-        输入:[0,1,0,1]
-        输出:[[1,0] [0,1] [1,0] [0,1]]
+        Convert label to onehot encoding
+        input:[0,1,0,1]
+        output:[[1,0] [0,1] [1,0] [0,1]]
         """
         nb_classes = int(max(label)) + 1
         targets = np.array(label, dtype=np.int32).reshape(-1)
